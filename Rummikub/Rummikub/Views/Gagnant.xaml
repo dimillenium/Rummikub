@@ -1,0 +1,38 @@
+﻿<Window x:Class="Rummikub.Views.Gagnant"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Gagnant" Height="800" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="styleTexte" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="/Resources/Fonts/#Chivo Black" />
+
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="400" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="txtRaison" Style="{StaticResource styleTexte}" Grid.Column="0" Grid.Row="0" />
+
+        <ItemsControl Name="itemsGagnants" Grid.Column="0" Grid.Row="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Background="#d5c1a6">
+                        <Image Width="100" Height="100" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Item1}"/>
+                        <TextBlock Style="{StaticResource styleTexte}" Margin="10" Text="{Binding Item2}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ListBox x:Name="lstBoxAutresGagnants" Margin="10" Grid.Column="0" Grid.Row="2" />
+    </Grid>
+</Window>

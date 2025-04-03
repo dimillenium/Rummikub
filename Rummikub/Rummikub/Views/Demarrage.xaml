@@ -1,0 +1,104 @@
+﻿<Window x:Class="Rummikub.Views.Demarrage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Connexion" Width="1200" Height="900" WindowStartupLocation="CenterScreen" Closing="Connexion_Closing">
+    <Window.Resources>
+        <Style x:Key="styleMessageErreur" TargetType="Label">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                            <Label FontStyle="Italic" Foreground="Red" Content="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
+            </Style.Triggers>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="Transparent">
+                            <Image Width="200" Height="200" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="200" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.Background>
+                <ImageBrush Stretch="UniformToFill" ImageSource="/Resources/Images/rummikub.png" />
+            </Grid.Background>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="1" x:Name="gridGrille" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Height="25" Content="Nom d'utilisateur" />
+            <Label Grid.Column="0" Grid.Row="1" Height="25" Content="Mot de passe" />
+
+            <TextBox x:Name="txtNomUtilisateur" Grid.Column="1" Grid.Row="0" Height="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+            <PasswordBox x:Name="passMotDePasse" Grid.Column="1" Grid.Row="1" Height="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        </Grid>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Choisissez votre personnage :" HorizontalAlignment="Center" VerticalContentAlignment="Center" />
+
+        <Grid Grid.Column="0" Grid.Row="3">
+
+            <UniformGrid x:Name="gridSelectionPersonnage"  Columns="6" Rows="1">
+                <RadioButton x:Name="green" Content="/Resources/Images/green.gif" />
+                <RadioButton x:Name="mustard" Content="/Resources/Images/mustard.gif" />
+                <RadioButton x:Name="peacock" Content="/Resources/Images/peacock.gif" />
+                <RadioButton x:Name="plum" Content="/Resources/Images/plum.gif" />
+                <RadioButton x:Name="scarlet" Content="/Resources/Images/scarlet.gif" />
+                <RadioButton x:Name="white" Content="/Resources/Images/white.gif" />
+            </UniformGrid>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0" x:Name="btnValiderConnexion" Height="25" Click="btnValiderConnexion_Click" IsDefault="True" Content="Valider connexion" />
+            <Button Grid.Column="1" Grid.Row="0" x:Name="btnCreerJoueur" Height="25" Click="btnCreerJoueur_Click" Content="Créer joueur" />
+            <Label x:Name="lblMessage" Style="{StaticResource styleMessageErreur}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Height="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        </Grid>
+    </Grid>
+</Window>

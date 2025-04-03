@@ -1,0 +1,202 @@
+﻿<Window x:Class="Rummikub.Views.Jeu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Rummikub" WindowState="Maximized" Loaded="Jeu_Loaded">
+    <Window.Resources>
+        <Style TargetType="Image">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="200" />
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        </Style>
+
+        <Style TargetType="{x:Type Canvas}">
+            <EventSetter Event="PreviewMouseUp" Handler="Canvas_PreviewMouseUp" />
+        </Style>
+
+        <Style TargetType="{x:Type StackPanel}">
+            <EventSetter Event="MouseEnter" Handler="StackPanel_MouseEnter" />
+            <EventSetter Event="MouseLeave" Handler="StackPanel_MouseLeave" />
+
+            <EventSetter Event="PreviewMouseDown" Handler="StackPanel_PreviewMouseDown" />
+            <EventSetter Event="PreviewMouseMove" Handler="StackPanel_PreviewMouseMove" />
+            <EventSetter Event="PreviewMouseUp" Handler="StackPanel_PreviewMouseUp" />
+        </Style>
+
+        <Style x:Key="StyleTuile" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Height" Value="70" />
+            <Setter Property="Width" Value="50" />
+
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontFamily" Value="/Resources/Fonts/#Chivo Black" />
+
+            <Setter Property="Background" Value="#d5c1a6" />
+
+            <EventSetter Event="Checked" Handler="ToggleButton_Checked" />
+            <EventSetter Event="Unchecked" Handler="ToggleButton_Unchecked" />
+        </Style>
+
+        <Style x:Key="StyleTuileAffichage" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Height" Value="70" />
+            <Setter Property="Width" Value="50" />
+
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontFamily" Value="/Resources/Fonts/#Chivo Black" />
+
+            <Setter Property="Background" Value="#d5c1a6" />
+
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="0, 3, 3, 0" BorderBrush="Brown">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StyleCompteAffichage" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Opacity" Value="0.75" />
+        </Style>
+
+        <Style x:Key="StyleTuileNormale" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource StyleTuile}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="0, 3, 3, 0" BorderBrush="Brown">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightBlue" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Background" Value="LightGreen" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StyleTuileAtout" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource StyleTuile}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="0, 3, 3, 0" BorderBrush="Brown">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <Image Margin="5" RenderOptions.BitmapScalingMode="HighQuality" Source="/Resources/Images/atout.png" />
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightBlue" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Background" Value="LightGreen" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="gridPlancheJeu" Grid.Column="0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="gridJoueurs" Grid.Column="0" Grid.Row="0">
+                <Grid.Background>
+                    <ImageBrush Stretch="None" AlignmentX="Left" AlignmentY="Top" ImageSource="/Resources/Images/fond.jpg" />
+                </Grid.Background>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="200" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="imgPersonnage1" Grid.Column="0" Grid.Row="1" />
+                <TextBlock x:Name="txtNomUtilisateur1" Grid.Column="0" Grid.Row="1" Style="{StaticResource StyleCompteAffichage}" />
+
+                <Image x:Name="imgPersonnage2" Grid.Column="0" Grid.Row="2" />
+                <TextBlock x:Name="txtNomUtilisateur2" Grid.Column="0" Grid.Row="2" Style="{StaticResource StyleCompteAffichage}" />
+
+                <Image x:Name="imgPersonnage3" Grid.Column="0" Grid.Row="3" />
+                <TextBlock x:Name="txtNomUtilisateur3" Grid.Column="0" Grid.Row="3" Style="{StaticResource StyleCompteAffichage}" />
+
+                <Image x:Name="imgPersonnage0" Grid.Column="0" Grid.Row="4" />
+                <TextBlock x:Name="txtNomUtilisateur0" Grid.Column="0" Grid.Row="4" Style="{StaticResource StyleCompteAffichage}" />
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.Background>
+                    <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0, 0, 512, 512" ImageSource="/Resources/Images/tile.jpg" />
+                </Grid.Background>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="150" />
+                </Grid.RowDefinitions>
+
+                <Canvas x:Name="canvasTableJeu" Grid.Column="0" Grid.Row="0" Margin="10" Background="Transparent" />
+
+                <StackPanel x:Name="stackPanelChevalet" Style="{x:Null}" Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" Background="White" />
+
+                <Grid Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnTriParValeur" Grid.Column="0" Grid.Row="0" Margin="10, 10, 10, 10" Width="200" Height="25" Click="btnTriParValeur_Click" Content="Tri par valeur"/>
+                    <Button x:Name="btnTriParCouleur" Grid.Column="1" Grid.Row="0" Margin="0, 10, 10, 10" Width="200" Height="25" Click="btnTriParCouleur_Click" Content="Tri par couleur"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="gridControles" Grid.Column="2" Grid.Row="0" Background="#d5c1a6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <TextBox x:Name="txtTrace" Grid.Column="0" Grid.Row="0" Margin="10, 10, 10, 10" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" />
+            <Button x:Name="btnJoueurSuivant" Grid.Column="0" Grid.Row="1" Margin="10, 0, 10, 10" Click="btnJoueurSuivant_Click" Content="Joueur suivant" IsDefault="True" />
+            <Button x:Name="btnPiocherTuile" Grid.Column="0" Grid.Row="2" Margin="10, 0, 10, 0" Click="btnPiocherTuile_Click" Content="Piocher une tuile" />
+            <TextBox x:Name="txtPile" Grid.Column="0" Grid.Row="3" Margin="10, 10, 10, 10" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+            <Button x:Name="btnDepilerDeplacement" Grid.Column="0" Grid.Row="4" Margin="10, 0, 10, 10" Click="btnDepilerDeplacement_Click" IsEnabled="False" Content="Dépiler le dernier déplacement" />
+        </Grid>
+    </Grid>
+</Window>
